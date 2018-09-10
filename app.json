@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "sdkVersion": "24.0.0",
+    "slug": "Kudypoditys",
+    "orientation": "portrait",
+    "primaryColor": "#cccccc",
+    "packagerOpts": {
+      "assetExts": ["ttf"]
+    }
+  }
+}
