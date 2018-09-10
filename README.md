@@ -1,4 +1,4 @@
-# Kudypoditys Native App
+# Kudypoditys Mobile App
 
 ```
 	> npm i
