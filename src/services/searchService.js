@@ -4,10 +4,10 @@ import Storage from "../helpers/asyncStorage";
 class SearchService {
   searchProperties(params) {
     return api
-      .sendRequest("/search-page", "get", params)
+      .sendRequest(`/api/search-property${params}`, "get")
       .then(response => response.data)
       .catch(err => {
-        return Promise.reject(new Error(err.message));
+        return Promise.reject(err.message);
       });
   }
 }

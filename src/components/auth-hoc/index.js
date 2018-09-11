@@ -32,6 +32,8 @@ export class AuthHOC extends Component {
 
   logout = () => {
     this.props.logout();
+    console.log(this.props.navigation);
+    this.props.navigation.toggleDrawer();
   };
 
   render() {
@@ -43,7 +45,7 @@ export class AuthHOC extends Component {
           <UserDetails
             name={this.props.user.fullName}
             avatarUri={this.props.user.avatar}
-            status="Logged In"
+            status={this.props.user.email}
           />
         ) : (
           <View style={styles.signinWrapper}>
@@ -77,7 +79,7 @@ export class AuthHOC extends Component {
         this.props.user.email ? (
           <TouchableNativeFeedback onPress={this.logout}>
             <View style={styles.logout}>
-              <Icon name="sign-out" size={24} color="#757575" />
+              <Icon name="sign-out" size={20} color="#757575" />
               <Text style={styles.logoutText}>Logout</Text>
             </View>
           </TouchableNativeFeedback>
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
     color: "#465571",
   },
   userStatus: {
-    paddingLeft: 14,
+    paddingLeft: 0,
     fontSize: 13,
     fontWeight: "400",
     color: "#767676",

@@ -13,7 +13,7 @@ import Property from "../segment";
 
 export default class BookingNow extends Component {
   onSegmentPressed = id => {
-    this.props.route.navigation.navigate("Property", { id: id });
+    this.props.route.navigation.navigate("Property");
   };
 
   render() {
@@ -30,13 +30,13 @@ export default class BookingNow extends Component {
         />
 
         <Property
-            id={2}
-            imageUri="https://images.pexels.com/photos/221457/pexels-photo-221457.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-            name="Resort SPA VIP"
-            address="5, Nice, Les Baumettes"
-            checkIn="24.12"
-            checkOut="31.12"
-            onSegmentPressed={this.onSegmentPressed}
+          id={2}
+          imageUri="https://images.pexels.com/photos/221457/pexels-photo-221457.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+          name="Resort SPA VIP"
+          address="5, Nice, Les Baumettes"
+          checkIn="24.12"
+          checkOut="31.12"
+          onSegmentPressed={this.onSegmentPressed}
         />
       </ScrollView>
     );

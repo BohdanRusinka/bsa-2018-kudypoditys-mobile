@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
-import devToolsEnhancer from "remote-redux-devtools";
+import devToolsEnhancer, { composeWithDevTools } from "remote-redux-devtools";
 import { Provider } from "react-redux";
 
 // import { NavigationStack } from "./config/router";
@@ -17,8 +17,7 @@ const middleware = [sagaMiddleware];
 
 const store = createStore(
   reducer,
-  devToolsEnhancer(),
-  applyMiddleware(...middleware),
+  composeWithDevTools(applyMiddleware(...middleware)),
 );
 
 sagaMiddleware.run(rootSaga);

@@ -32,6 +32,10 @@ export class LoginPage extends Component {
       await Storage.setItem("loginStatus", "success");
       this.props.navigation.navigate("Search");
     } else {
+      // const message = this.props.loginStatus.replace("Error").replace("Error").replace(":").replace(":");
+      const message = this.props.loginStatus;
+      console.log(message);
+      alert(message);
       await Storage.setItem("loginStatus", this.props.loginStatus);
     }
   }

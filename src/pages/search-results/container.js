@@ -1,7 +1,7 @@
 import { searchSubmit } from "../../logic/search/actions";
 
 export function mapStateToProps(state) {
-  const { search } = state;
+  const search = state.search;
   return {
       ...search
   };
@@ -9,8 +9,8 @@ export function mapStateToProps(state) {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    searchSubmit(data) {
+    fetchProperties(data) {
       dispatch(searchSubmit(data));
-    }
+    },
   };
 }

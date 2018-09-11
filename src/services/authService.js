@@ -41,7 +41,7 @@ class AuthService {
       })
       .catch(err => {
         console.log("AuthService ERR: ", err);
-        return Promise.reject(new Error(err));
+        return Promise.reject(err.message);
       });
   }
 

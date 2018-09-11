@@ -14,6 +14,7 @@ import { Constants } from "expo";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import ImageSlider from "react-native-image-slider";
+import HeaderButton from "../../components/header-button";
 
 export default class PropertyPage extends Component {
   state = {
@@ -24,8 +25,8 @@ export default class PropertyPage extends Component {
     address: "France, Paris, Giromo Street, 22"
   };
 
-  goToHomePage = () => {
-    this.props.navigation.navigate("Bookings");
+  goBack = () => {
+    this.props.navigation.goBack();
   };
 
   cancelBooking = () => {
@@ -55,17 +56,18 @@ export default class PropertyPage extends Component {
     return (
       <View style={styles.container}>
         {/*<Button onPress={this.goToHomePage} title={"< Back"} style={styles.backButton} />*/}
-        <Icon.Button
-          onPress={this.goToHomePage}
-          name="chevron-left"
-          size={24}
-          iconStyle={{ marginLeft: 10 }}
-          borderRadius={0}
-          color="white"
-          style={styles.backButton}
-        >
-          <Text style={styles.backButtonText}>{this.state.propertyName}</Text>
-        </Icon.Button>
+        {/*<Icon.Button*/}
+          {/*onPress={this.goToHomePage}*/}
+          {/*name="chevron-left"*/}
+          {/*size={24}*/}
+          {/*iconStyle={{ marginLeft: 10 }}*/}
+          {/*borderRadius={0}*/}
+          {/*color="white"*/}
+          {/*style={styles.backButton}*/}
+        {/*>*/}
+          {/*<Text style={styles.backButtonText}>{this.state.propertyName}</Text>*/}
+        {/*</Icon.Button>*/}
+        <HeaderButton title={this.state.propertyName} onButtonPress={this.goBack}/>
 
         <ScrollView style={styles.body}>
           <ImageSlider

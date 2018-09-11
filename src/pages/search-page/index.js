@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   Picker,
+    Alert
 } from "react-native";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "./container";
@@ -16,7 +17,7 @@ import DatePicker from "react-native-modal-datetime-picker";
 import Header from "../../components/header";
 import Input from "../../components/input";
 
-export default class SearchPage extends Component {
+export class SearchPage extends Component {
   state = {
     query: "",
     checkInVisible: false,
@@ -26,17 +27,37 @@ export default class SearchPage extends Component {
     selectedRooms: "Rooms",
     selectedAdults: "Adults",
     selectedChildren: "Children",
+    page: 1
   };
 
 
   handleSearch = () => {
-    console.log(this.state);
-    const startDate = this.state.checkIn.replace('"').replace('"');
-    const endDate = this.state.checkOut.replace('"').replace('"');
+    if(this.state.query.length < 1) {
+      return Alert.alert(
+          "Oops!",
+          "Looks like the search value is empty",
+          [{ text: "Got it", onPress: () => {}}]
+      )
+    }
+
+    let startDate, endDate;
+
+    if(startDate != null) {
+      startDate = this.state.checkIn.replace('"').replace('"');
+    } else {
+      startDate = Date.parse(new Date());
+    }
+    if(endDate != null) {
+      endDate = this.state.checkOut.replace('"').replace('"');
+    } else {
+      endDate = startDate + 5 * 24 * 60 * 60 * 1000; // + 5 days
+    }
+
     const query = this.state.query;
     const rooms = this.state.selectedRooms === "Rooms" ? 1 : this.state.selectedRooms;
     const adults = this.state.selectedAdults === "Adults" ? 1 : this.state.selectedAdults;
     const children = this.state.selectedChildren === "Children" ? 0 : this.state.selectedChildren;
+    const page = this.state.page;
 
     //http://kudypoditys.ml/search-page?query=Lviv&rooms=1&adults=1&children=1&startDate=1536606838947&endDate=1537038838947&page=1
     const searchParams = {
@@ -46,9 +67,13 @@ export default class SearchPage extends Component {
       children,
       startDate,
       endDate,
+      page
     }
 
+    console.log("SearchParams:", searchParams);
+
     this.props.searchSubmit(searchParams);
+    this.props.navigation.navigate("SearchResults");
   }
 
   handleInputChange = (value) => {
@@ -217,6 +242,8 @@ export default class SearchPage extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
 
 const windowWidth = Dimensions.get("window").width;
 

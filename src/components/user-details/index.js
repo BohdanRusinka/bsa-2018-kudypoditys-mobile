@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     color: "#465571",
   },
   userStatus: {
-    paddingLeft: 14,
+    paddingLeft: 10,
     fontSize: 13,
     fontWeight: "400",
     color: "#767676",

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 export default props => {
-  const { id, imageUri, name, address, checkIn, checkOut } = props;
+  const { id, imageUri, name, address, checkIn, checkOut, price } = props;
 
   const onSegmentPressed = id => {
     props.onSegmentPressed(id);
@@ -26,9 +26,12 @@ export default props => {
         <View style={styles.details}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.address}>{address}</Text>
-          <Text style={styles.dates}>
-            {checkIn} - {checkOut}
-          </Text>
+          <View style={styles.downBlock}>
+            <Text style={styles.dates}>
+              {checkIn} - {checkOut}
+            </Text>
+            <Text style={styles.price}>{price}</Text>
+          </View>
         </View>
       </View>
     </TouchableNativeFeedback>
@@ -68,15 +71,29 @@ const styles = StyleSheet.create({
     height: 30,
     paddingTop: 4,
     width: "auto",
-    fontSize: 18,
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#465672"
   },
   address: {
     height: 20,
     width: "auto",
-    color: "grey",
+    color: "#9197a3",
   },
   dates: {
     height: 20,
     width: "auto",
+    color: "#465672"
+  },
+  downBlock: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  price: {
+    // backgroundColor: "rgba(255, 100, 100, 0.3)",
+    paddingRight: 10,
+    color: "#00A882",
+    fontWeight: "600",
   },
 });

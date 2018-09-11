@@ -42,13 +42,15 @@ const styles = StyleSheet.create({
   outerContainerStyles: {
     backgroundColor: mainColor,
     margin: 0,
-    marginBottom: -2
+    marginBottom: -2,
+    height: 51,
   },
   innerContainerStyles: {
     backgroundColor: mainColor
   },
   text: {
     color: "white",
-    fontWeight: "600"
+    fontWeight: "600",
+    fontSize: 18
   }
 })

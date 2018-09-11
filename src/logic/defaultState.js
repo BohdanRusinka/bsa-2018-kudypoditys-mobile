@@ -6,6 +6,9 @@ const state = {
     children: "0",
     checkin: "",
     checkout: "",
+    page: "1",
+    foundProperties: {},
+    lastUpdate: 0
   },
   user: {},
 

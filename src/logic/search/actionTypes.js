@@ -1,3 +1,5 @@
 export const SEARCH_UPDATE = "SEARCH:UPDATE";
 
 export const SEARCH_SUBMIT = "SEARCH:SUBMIT";
+
+export const PROPERTY_FETCH = "PROPERTY:FETCH";
