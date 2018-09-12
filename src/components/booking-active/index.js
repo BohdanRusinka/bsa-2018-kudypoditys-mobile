@@ -7,11 +7,13 @@ import {
   Image,
   ScrollView,
   TouchableNativeFeedback,
+    Alert
 } from "react-native";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "./container";
 import Property from "../segment";
 import Loader from "../../components/loader";
+import Storage from "../../helpers/asyncStorage";
 
 export class BookingActive extends Component {
   constructor(props) {
@@ -43,7 +45,18 @@ export class BookingActive extends Component {
     this.props.getBookings();
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    const loginStatus = await Storage.getItem("loginStatus");
+    if (!loginStatus || loginStatus !== "success") {
+      return Alert.alert(
+          "Oops!",
+          "You must login to proceed viewing this page.",
+          [{ text: "Okay", onPress: () => this.props.route.navigation.navigate("Search")}],
+          {
+            cancelable: false
+          }
+      );
+    }
     this.getBookings();
   }
 

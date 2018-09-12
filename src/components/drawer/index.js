@@ -15,6 +15,7 @@ import SearchResultsPropertyPage from "../../pages/search-results-property-page"
 import BookingsPage from "../../pages/bookings";
 import SettingsPage from "../../pages/settings";
 import LoginPage from "../../pages/login-page";
+import RegistrationPage from "../../pages/registration";
 
 import AuthHOC from "../auth-hoc";
 
@@ -60,6 +61,9 @@ const Drawer = createDrawerNavigator(
     Login: {
       screen: LoginPage,
     },
+    Registration: {
+      screen: RegistrationPage
+    }
   },
   {
     initialRouteName: "Search",

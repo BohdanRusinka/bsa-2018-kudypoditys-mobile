@@ -3,7 +3,8 @@ import search from "./search/saga";
 import login from "./login/saga";
 import user from "./auth-hoc/saga";
 import bookings from "./bookings/saga";
+import registration from "./registration/saga";
 
 export default function* rootSaga() {
-  yield all([fork(search), fork(login), fork(user), fork(bookings)]);
+  yield all([fork(search), fork(login), fork(user), fork(bookings), fork(registration)]);
 }

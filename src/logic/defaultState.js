@@ -16,6 +16,9 @@ const state = {
   },
   bookings: {
     lastUpdate: 0
+  },
+  registration: {
+    lastUpdate: 0
   }
 };
 

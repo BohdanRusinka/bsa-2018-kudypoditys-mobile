@@ -33,7 +33,7 @@ export class AuthHOC extends Component {
   logout = () => {
     this.props.logout();
     console.log(this.props.navigation);
-    this.props.navigation.toggleDrawer();
+    this.props.navigation.navigate("Search");
   };
 
   render() {
@@ -96,12 +96,12 @@ export default connect(
 
 const styles = StyleSheet.create({
   signinWrapper: {
-    height: 50,
+    height: 70,
   },
   signinButton: {
     backgroundColor: "#f1f1f1",
     elevation: 0,
-    height: 50,
+    height: 70,
   },
   signinButtonTitle: {
     color: "#9b9b9b",

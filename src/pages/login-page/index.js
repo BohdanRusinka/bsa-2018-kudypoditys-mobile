@@ -20,21 +20,32 @@ export class LoginPage extends Component {
     });
   };
 
+  goRegister = () => {
+    this.props.navigation.navigate("Registration");
+  };
+
+  goHome = () => {
+    this.props.navigation.navigate("Search");
+  };
+
   componentWillMount() {
-    if(this.props.loginStatus === "success") {
+    if (this.props.loginStatus === "success") {
       this.props.navigation.navigate("Search");
     }
   }
 
   async componentDidUpdate() {
     console.log("LoginPage Did Update");
-    if(this.props.loginStatus === "success") {
+    if (this.props.loginStatus === "success") {
       await Storage.setItem("loginStatus", "success");
       this.props.navigation.navigate("Search");
     } else {
       // const message = this.props.loginStatus.replace("Error").replace("Error").replace(":").replace(":");
       const message = this.props.loginStatus;
       console.log(message);
+      if (message === null || message === undefined) {
+        return await Storage.setItem("loginStatus", this.props.loginStatus);
+      }
       alert(message);
       await Storage.setItem("loginStatus", this.props.loginStatus);
     }
@@ -59,7 +70,7 @@ export class LoginPage extends Component {
             placeholder="E-mail"
             leftIcon={{
               type: "MaterialIcons",
-              name: "person",
+              name: "email",
               color: "#EDEDED",
             }}
             value={this.state.email}
@@ -94,6 +105,38 @@ export class LoginPage extends Component {
           titleStyle={styles.loginButtonTitle}
           title="Submit"
         />
+        <View style={styles.buttonNavigateWrapper}>
+          <Button
+            title="Home"
+            icon={{
+              type: "MaterialIcons",
+              name: "arrow-back",
+              size: 18,
+              color: "#afb2b9",
+            }}
+            onPress={this.goHome}
+            iconLeft
+            buttonStyle={styles.homeButton}
+            containerStyle={styles.homeButtonContainer}
+            titleStyle={styles.homeButtonTitle}
+            iconContainerStyle={styles.homeButtonIconContainerLeft}
+          />
+          <Button
+            title="Register"
+            icon={{
+              type: "MaterialIcons",
+              name: "arrow-forward",
+              size: 18,
+              color: "#afb2b9",
+            }}
+            onPress={this.goRegister}
+            iconRight
+            buttonStyle={styles.homeButton}
+            containerStyle={styles.homeButtonContainer}
+            titleStyle={styles.homeButtonTitle}
+            iconContainerStyle={styles.homeButtonIconContainerRight}
+          />
+        </View>
       </View>
     );
   }
@@ -153,5 +196,30 @@ const styles = StyleSheet.create({
     width: windowWidth,
     paddingVertical: 10,
     paddingHorizontal: 20,
+  },
+  buttonNavigateWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    width: windowWidth - 40,
+    paddingTop: 10,
+  },
+  homeButtonContainer: {
+    flex: 1,
+  },
+  homeButton: {
+    elevation: 0,
+    backgroundColor: "transparent",
+  },
+  homeButtonTitle: {
+    color: "#afb2b9",
+    fontWeight: "400",
+  },
+  homeButtonIconContainerLeft: {
+    marginRight: -5,
+    paddingTop: 3,
+  },
+  homeButtonIconContainerRight: {
+    marginLeft: -5,
+    paddingTop: 3,
   },
 });

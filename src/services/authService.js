@@ -5,16 +5,9 @@ class AuthService {
   signup(user) {
     return api
       .sendRequest("/api/signup", "post", user)
-      .then(response => {
-        const {
-          accessToken,
-          refreshToken,
-          accessExpiryDate,
-          refreshExpiryDate,
-        } = response.data;
-      })
+      .then(response => response.data)
       .catch(err => {
-        return Promise.reject(new Error(err.message));
+        return Promise.reject(err.message);
       });
   }
 
