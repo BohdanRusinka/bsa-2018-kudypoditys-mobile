@@ -3,21 +3,32 @@ import { TabView, TabBar, SceneMap } from "react-native-tab-view";
 import { Dimensions, StyleSheet } from "react-native";
 import { Constants } from "expo";
 
-import BookingNow from "../booking-now";
-import BookingLast from "../booking-last";
+import BookingActive from "../booking-active";
+import BookingPast from "../booking-past";
 
 export default class TabNavigation extends Component {
   state = {
     index: 0,
+    lastUpdate: 0,
     routes: [
-      { key: "BookingNow", title: "Now", navigation: this.props.navigation },
-      { key: "BookingLast", title: "Last", navigation: this.props.navigation },
+      {
+        key: "BookingActive",
+        title: "Active",
+        navigation: this.props.navigation,
+        lastUpdate: 0,
+      },
+      {
+        key: "BookingPast",
+        title: "Past",
+        navigation: this.props.navigation,
+        lastUpdate: 0,
+      },
     ],
   };
 
   sceneMap = SceneMap({
-    BookingNow: BookingNow,
-    BookingLast: BookingLast,
+    BookingActive: BookingActive,
+    BookingPast: BookingPast,
   });
 
   renderTabBar = props => (
@@ -30,13 +41,26 @@ export default class TabNavigation extends Component {
     />
   );
 
+  changeIndex = index => {
+    console.log("INDEX CHANGE", index);
+    this.setState({
+      index,
+      routes: this.state.routes.map(
+        (route, i) =>
+          i === index
+            ? { ...route, lastUpdate: Date.parse(new Date()) }
+            : route,
+      ),
+    });
+  };
+
   render() {
     return (
       <TabView
         style={{ flex: 1 }}
         navigationState={this.state}
         renderScene={this.sceneMap}
-        onIndexChange={index => this.setState({ index })}
+        onIndexChange={this.changeIndex}
         renderTabBar={this.renderTabBar}
         initialLayout={{ width: Dimensions.get("window").width, height: 0 }}
       />

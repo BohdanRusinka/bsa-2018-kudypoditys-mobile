@@ -9,27 +9,36 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
+import { connect } from "react-redux";
+import { mapStateToProps, mapDispatchToProps } from "./container";
 import { Constants } from "expo";
-
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import ImageSlider from "react-native-image-slider";
 import HeaderButton from "../../components/header-button";
 
-export default class PropertyPage extends Component {
+export class PropertyPage extends Component {
   state = {
     checkIn: "22.12",
     checkOut: "23.12",
     facilities: ["Shower", "Wi-Fi", "TV"],
     propertyName: "Hostel France",
-    address: "France, Paris, Giromo Street, 22"
+    address: "France, Paris, Giromo Street, 22",
   };
 
   goBack = () => {
+    this.props.navigation.state.params.getBookings();
     this.props.navigation.goBack();
   };
 
-  cancelBooking = () => {
+  cancelSubmit = (id) => {
+    this.props.cancelBooking({ id: id });
+    setTimeout(() => {
+      this.goBack();
+    }, 500);
+  }
+
+  cancelBooking = (id) => {
     Alert.alert(
       "Are you sure?",
       "Cancel this booking?",
@@ -39,7 +48,7 @@ export default class PropertyPage extends Component {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "Submit", onPress: () => console.log("OK Pressed") },
+        { text: "Submit", onPress: () => this.cancelSubmit(id) },
       ],
       { cancelable: false },
     );
@@ -53,26 +62,28 @@ export default class PropertyPage extends Component {
   render() {
     const { navigation } = this.props;
     const id = navigation.getParam("id");
+    const bookingData = navigation.getParam("bookingData");
+    const {
+      checkIn,
+      checkOut,
+      propertyName,
+      address,
+      price,
+      description,
+      images,
+      room,
+      confirmationCode,
+      phone,
+    } = bookingData;
+
     return (
       <View style={styles.container}>
-        {/*<Button onPress={this.goToHomePage} title={"< Back"} style={styles.backButton} />*/}
-        {/*<Icon.Button*/}
-          {/*onPress={this.goToHomePage}*/}
-          {/*name="chevron-left"*/}
-          {/*size={24}*/}
-          {/*iconStyle={{ marginLeft: 10 }}*/}
-          {/*borderRadius={0}*/}
-          {/*color="white"*/}
-          {/*style={styles.backButton}*/}
-        {/*>*/}
-          {/*<Text style={styles.backButtonText}>{this.state.propertyName}</Text>*/}
-        {/*</Icon.Button>*/}
-        <HeaderButton title={this.state.propertyName} onButtonPress={this.goBack}/>
+        <HeaderButton title={propertyName} onButtonPress={this.goBack} />
 
         <ScrollView style={styles.body}>
           <ImageSlider
             loopBothSides
-            images={this.images}
+            images={images}
             customSlide={({ index, item, style, width }) => (
               <View key={index} style={[style, styles.customSlide]}>
                 <Image source={{ uri: item }} style={styles.customImage} />
@@ -87,50 +98,55 @@ export default class PropertyPage extends Component {
             buttonStyle={styles.addressButton}
             containerStyle={styles.addressButtonContainer}
             titleStyle={styles.addressButtonTitle}
-            title={this.state.address}
+            title={address}
           />
 
           <View style={styles.dates}>
-            <Text style={styles.datesText}>Check in: {this.state.checkIn}</Text>
-            <Text style={styles.datesText}>
-              Check out: {this.state.checkOut}
-            </Text>
+            <Text style={styles.datesText}>Check in: {checkIn}</Text>
+            <Text style={styles.datesText}>Check out: {checkOut}</Text>
           </View>
 
           <View style={styles.description}>
             <Text style={styles.heading}>Description:</Text>
-            <Text style={styles.text}>
-              Beautiful hotel located somewhere in Paris, i don't know actually
-              where exactly, but...
-            </Text>
+            <Text style={styles.text}>{description}</Text>
           </View>
 
-          <View style={styles.facilities}>
-            <Text style={styles.heading}>Facilities:</Text>
-            <View>
-              {this.state.facilities.map((item, i) => (
-                <Text key={i} style={styles.text}>
-                  {item}
-                </Text>
-              ))}
-            </View>
+          <View style={styles.description}>
+            <Text style={styles.heading}>Confiramtion code:</Text>
+            <Text style={styles.text}>{confirmationCode}</Text>
           </View>
+
+          <View style={styles.description}>
+            <Text style={styles.heading}>Contact phone:</Text>
+            <Text style={styles.text}>{phone}</Text>
+          </View>
+
+          {/*<View style={styles.facilities}>*/}
+          {/*<Text style={styles.heading}>Facilities:</Text>*/}
+          {/*<View>*/}
+          {/*{this.state.facilities.map((item, i) => (*/}
+          {/*<Text key={i} style={styles.text}>*/}
+          {/*{item}*/}
+          {/*</Text>*/}
+          {/*))}*/}
+          {/*</View>*/}
+          {/*</View>*/}
 
           <View style={styles.price}>
             <Text style={styles.heading}>Price:</Text>
-            <Text style={styles.text}>200$</Text>
+            <Text style={styles.text}>{price}$</Text>
           </View>
 
           <View style={styles.rooms}>
-            <Text style={styles.heading}>Rooms:</Text>
+            <Text style={styles.heading}>Room:</Text>
             <View>
-              <Text style={styles.text}>Double Room</Text>
+              <Text style={styles.text}>{room}</Text>
             </View>
           </View>
 
           <Button
             title="Cancel booking"
-            onPress={this.cancelBooking}
+            onPress={() => this.cancelBooking(id)}
             buttonStyle={styles.cancelBookingButton}
           />
         </ScrollView>
@@ -139,13 +155,18 @@ export default class PropertyPage extends Component {
   }
 }
 
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PropertyPage);
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F1F1F1"
+    backgroundColor: "#F1F1F1",
   },
   backButton: {
     backgroundColor: "#465672",
@@ -180,35 +201,40 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   dates: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   datesText: {
     color: "#333",
   },
   description: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   facilities: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   price: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   rooms: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   addressButtonContainer: {
     width: windowWidth,
-    elevation: 0
+    elevation: 0,
   },
   addressButton: {
     backgroundColor: "#fafafa",
-    elevation: 0
+    elevation: 0,
   },
   addressButtonTitle: {
     color: "#7d7d7d",
     fontSize: 15,
-    fontWeight: "600"
+    fontWeight: "600",
   },
   cancelBookingButton: {
     width: windowWidth - 60,

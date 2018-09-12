@@ -1,0 +1,4 @@
+export const BOOKINGS_FETCH = "BOOKINGS:FETCH";
+export const BOOKINGS_GET = "BOOKINGS:GET";
+
+export const BOOKINGS_CANCEL = "BOOKINGS:CANCEL";

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
-import devToolsEnhancer, { composeWithDevTools } from "remote-redux-devtools";
+import { composeWithDevTools } from "remote-redux-devtools";
 import { Provider } from "react-redux";
 
 // import { NavigationStack } from "./config/router";

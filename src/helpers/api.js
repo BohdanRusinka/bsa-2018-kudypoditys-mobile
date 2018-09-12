@@ -22,7 +22,7 @@ class Api {
         },
       });
     } catch (err) {
-      console.log(err);
+      return this.handleApiError(err);
     }
   };
 

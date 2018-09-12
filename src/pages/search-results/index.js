@@ -11,17 +11,14 @@ import Loader from "../../components/loader";
 
 export class SearchResults extends Component {
   static defaultProps = {
-    foundProperties: {
-      properties: [],
-      propetiesCount: -1,
-    },
     page: 1,
-    buttonLoading: false,
   };
 
   state = {
     properties: [],
+    propertiesCount: 0,
     pages: 1,
+    buttonLoading: false,
   };
 
   goToHomePage = () => {
@@ -29,7 +26,7 @@ export class SearchResults extends Component {
   };
 
   onSegmentPressed = id => {
-    this.props.navigation.navigate("Property", { id: id });
+    this.props.navigation.navigate("SearchResultsProperty", { id: id });
   };
 
   fetchMoreProperties = () => {
@@ -44,11 +41,9 @@ export class SearchResults extends Component {
     };
 
     if (Number(params.page) < this.state.pages) {
-      console.log("PARAMS PAGE IF ->>", params.page, this.state.pages);
       params.page = `${Number(params.page) + 1}`;
     }
-    console.log("Params Page ->", params.page);
-    // return;
+
     this.props.fetchProperties(params);
     this.setState({
       buttonLoading: true,
@@ -57,34 +52,38 @@ export class SearchResults extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.lastUpdate !== prevProps.lastUpdate) {
-      this.setState({
-        properties: [
-          ...this.state.properties,
-          ...this.props.foundProperties.properties,
-        ],
-        pages: Math.ceil(
-          Number(this.props.foundProperties.propertiesCount) / 5,
-        ),
-        buttonLoading: false,
-      });
+      if (!this.props.foundProperties) {
+        this.setState({
+          properties: undefined,
+        });
+      } else {
+        this.setState({
+          properties: [
+            ...this.state.properties,
+            ...this.props.foundProperties.properties,
+          ],
+          pages: Math.ceil(
+            Number(this.props.foundProperties.propertiesCount) / 5,
+          ),
+          propertiesCount: this.props.foundProperties.propertiesCount,
+          buttonLoading: false,
+        });
+      }
     }
   }
 
   render() {
-    console.log("Properties count", this.props.foundProperties.propetiesCount);
-    console.log(
-      "Search results properties",
-      this.props.foundProperties.properties,
-    );
-    const { properties } = this.state;
-    const { propertiesCount } = this.props.foundProperties;
-
+    const { properties, propertiesCount } = this.state;
     return (
       <View style={styles.wrapper}>
         <HeaderButton title="Results" onButtonPress={this.goToHomePage} />
-        {properties.length < 1 ? (
+        {properties && properties.length < 1 ? (
           <View style={styles.indicatorWrapper}>
             <Loader animating={true} />
+          </View>
+        ) : !properties ? (
+          <View style={styles.notFoundWrapper}>
+            <Text style={styles.notFoundText}>Not Found</Text>
           </View>
         ) : (
           <ScrollView style={styles.scrollView}>
@@ -102,6 +101,7 @@ export class SearchResults extends Component {
                 address={prop.address}
                 checkIn="Available"
                 checkOut="now"
+                price={prop.rooms && prop.rooms[0] && prop.rooms[0].price || "--"}
                 onSegmentPressed={this.onSegmentPressed}
               />
             ))}
@@ -128,7 +128,7 @@ export default connect(
 )(SearchResults);
 
 const windowHeight = Dimensions.get("window").height;
-const windowWidth = Dimensions.get("window").width
+const windowWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -138,9 +138,9 @@ const styles = StyleSheet.create({
   scrollView: {},
   foundText: {
     color: "#747474",
-    paddingLeft: 13,
+    paddingLeft: 14,
     paddingBottom: 2,
-    paddingTop: 5,
+    paddingTop: 8,
   },
   indicatorWrapper: {
     flex: 1,
@@ -150,15 +150,26 @@ const styles = StyleSheet.create({
   },
   moreButtonContainer: {
     marginTop: 10,
-    height: 50,
-    width: windowWidth - 20,
-    marginHorizontal: 10
+    height: 60,
+    width: windowWidth,
+    // marginHorizontal: 10,
   },
   moreButton: {
     flex: 1,
-    backgroundColor: "#A8AFBD",
+    backgroundColor: "#DFE3EB",
   },
   moreButtonTitle: {
-    // color: "#9096a2"
+    color: "#337DFF",
+    fontWeight: "400"
+  },
+  notFoundWrapper: {
+    // backgroundColor: "pink",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  notFoundText: {
+    color: "#A8AFBD",
+    fontSize: 16,
   }
 });

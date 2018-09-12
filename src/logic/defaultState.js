@@ -11,9 +11,11 @@ const state = {
     lastUpdate: 0
   },
   user: {},
-
   login: {
     loginStatus: null
+  },
+  bookings: {
+    lastUpdate: 0
   }
 };
 

@@ -11,6 +11,7 @@ import {
 import SearchPage from "../../pages/search-page";
 import SearchResults from "../../pages/search-results";
 import PropertyPage from "../../pages/property-page";
+import SearchResultsPropertyPage from "../../pages/search-results-property-page";
 import BookingsPage from "../../pages/bookings";
 import SettingsPage from "../../pages/settings";
 import LoginPage from "../../pages/login-page";
@@ -32,8 +33,8 @@ const SearchResults_ = createStackNavigator({
   SearchResults: {
     screen: SearchResults,
   },
-  Property: {
-    screen: PropertyPage,
+  SearchResultsProperty: {
+    screen: SearchResultsPropertyPage,
   },
 }, {
   headerMode: "none"
