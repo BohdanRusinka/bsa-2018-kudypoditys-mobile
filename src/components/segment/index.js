@@ -9,11 +9,12 @@ import {
 } from "react-native";
 
 export default props => {
-  const { id, imageUri, name, address, checkIn, checkOut, price } = props;
+  const { id, imageUri, name, address, checkIn, checkOut, price, currency } = props;
 
   const onSegmentPressed = id => {
     props.onSegmentPressed(id);
   };
+
   return (
     <TouchableNativeFeedback onPress={() => onSegmentPressed(id)}>
       <View style={styles.segment}>
@@ -30,7 +31,7 @@ export default props => {
             <Text style={styles.dates}>
               {checkIn} - {checkOut}
             </Text>
-            <Text style={styles.price}>${price}</Text>
+            <Text style={styles.price}>{currency.sign}{price}</Text>
           </View>
         </View>
       </View>

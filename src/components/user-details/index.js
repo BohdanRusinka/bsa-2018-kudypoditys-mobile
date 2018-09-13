@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   userDetails: {
     display: "flex",
     flexDirection: "row",
-    backgroundColor: "#ededed",
+    backgroundColor: "#465571",
     paddingVertical: 20,
     paddingHorizontal: 20,
     alignItems: "center",
@@ -34,14 +34,14 @@ const styles = StyleSheet.create({
   userCreds: {},
   userName: {
     paddingLeft: 10,
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "600",
-    color: "#465571",
+    color: "#DFE3EB",
   },
   userStatus: {
     paddingLeft: 10,
     fontSize: 13,
     fontWeight: "400",
-    color: "#767676",
+    color: "#d7dbe3",
   },
 });

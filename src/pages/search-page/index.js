@@ -158,7 +158,7 @@ export class SearchPage extends Component {
             containerStyle={[styles.datePickerButtonContainer]}
             title={
               this.state.checkIn === null
-                ? "CHECK-IN"
+                ? "Check-In"
                 : `${checkIn.getFullYear()}-${checkIn.getMonth() +
                     1}-${checkIn.getUTCDate()}`
             }
@@ -170,7 +170,7 @@ export class SearchPage extends Component {
             containerStyle={[styles.datePickerButtonContainer]}
             title={
               this.state.checkOut === null
-                ? "CHECK-OUT"
+                ? "Check-Out"
                 : `${checkOut.getFullYear()}-${checkOut.getMonth() +
                     1}-${checkOut.getUTCDate()}`
             }
@@ -223,6 +223,7 @@ export class SearchPage extends Component {
             <Picker
               selectedValue={this.state.selectedChildren}
               style={styles.picker}
+              itemStyle={styles.pickerItem}
               onValueChange={this.handleChildrenChange}
             >
               <Picker.Item label="Children" value="Children" />
@@ -279,16 +280,19 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     padding: 10,
+    paddingTop: 5,
     paddingBottom: 5
   },
   datePicker1: {
     borderBottomRightRadius: 0,
     borderTopRightRadius: 0,
-    borderRightWidth: 0
+    borderRightWidth: 0,
+    height: 50,
   },
   datePicker2: {
     borderBottomLeftRadius: 0,
-    borderTopLeftRadius: 0
+    borderTopLeftRadius: 0,
+    height: 50,
   },
   datePickerButton: {
     marginBottom: 20,
@@ -296,15 +300,15 @@ const styles = StyleSheet.create({
     // width: windowWidth / 2 - 20,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "#c3c3c3",
+    borderColor: "#d6d6d6",
     borderRadius: 4,
     shadowOpacity: 0,
     elevation: 0
   },
   datePickerButtonTitle: {
-    color: "#333",
+    color: "#6d727b",
     fontWeight: "400",
-    fontSize: 14,
+    fontSize: 16,
   },
   datePickerButtonContainer: {
     height: 50,
@@ -322,7 +326,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderWidth: 1,
     backgroundColor: "white",
-    borderColor: "#c3c3c3",
+    borderColor: "#d6d6d6",
     borderRadius: 4,
   },
   pickerView1: {
@@ -340,20 +344,23 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 46,
-    color: "#333"
+    color: "#6d727b",
   },
   searchButtonContainer: {
     width: windowWidth - 14,
-    height: 46,
+    height: 50,
     paddingLeft: 10
   },
   searchButton: {
     backgroundColor: "#465672",
-    height: 46,
+    height: 50,
     borderRadius: 4,
-    marginTop: 10
+    borderWidth: 1,
+    borderColor: "#3b4860",
+    marginTop: 10,
+    // elevation: 0
   },
   searchButtonTitle: {
-
+    color: "#DFE3EB"
   }
 });

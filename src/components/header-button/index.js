@@ -8,8 +8,8 @@ export default (props) => {
       <Button
           onPress={props.onButtonPress}
           icon={{
-            name: "chevron-left",
-            size: 26,
+            name: "arrow-back",
+            size: 24,
             color: "white"
           }}
           iconLeft

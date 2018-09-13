@@ -13,8 +13,13 @@ import { mapStateToProps, mapDispatchToProps } from "./container";
 
 import Property from "../../components/segment";
 import Loader from "../../components/loader";
+import Storage from "../../helpers/asyncStorage";
 
 export class BookingPast extends Component {
+  state = {
+    currency: {}
+  }
+
   onSegmentPressed = (id, booking) => {
     const bookingData = {
       checkIn: this.simplifyDate(booking.dateIn),
@@ -38,6 +43,13 @@ export class BookingPast extends Component {
   getBookings = () => {
     this.props.getBookings();
   };
+
+  async componentWillMount() {
+    const currency = await Storage.getItem("currency");
+    this.setState({
+      currency: currency
+    })
+  }
 
   componentDidMount() {
     this.getBookings();
@@ -90,8 +102,9 @@ export class BookingPast extends Component {
               address={prop.room.property.address}
               checkIn={this.simplifyDate(prop.dateIn)}
               checkOut={this.simplifyDate(prop.dateOut)}
-              price={prop.room.price}
+              price={prop.room.price * this.state.currency.multiplier}
               onSegmentPressed={id => this.onSegmentPressed(id, prop)}
+              currency={this.state.currency}
             />
           ))
         )}

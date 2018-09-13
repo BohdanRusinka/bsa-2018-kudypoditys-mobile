@@ -17,7 +17,7 @@ export default props => {
       inputContainerStyle={styles.inputContainer}
       onChangeText={handleChange}
       rightIcon={
-        <Icon name="search" size={20} style={styles.icon} color="grey" />
+        <Icon name="search" size={20} style={styles.icon} color="#A8AFBD" />
       }
     />
   );
@@ -31,10 +31,10 @@ const styles = StyleSheet.create({
     margin: 10,
     borderWidth: 1,
     backgroundColor: "white",
-    borderColor: "#c3c3c3",
+    borderColor: "#d6d6d6",
     borderRadius: 4,
     padding: 5,
-    borderBottomColor: "#c3c3c3",
+    borderBottomColor: "#d6d6d6",
   },
   input: {
     borderWidth: 0,

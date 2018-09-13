@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps } from "./container";
 import { View, ScrollView, Text, Dimensions, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
+import Storage from "../../helpers/asyncStorage";
 
 import Header from "../../components/header";
 import Segment from "../../components/segment";
@@ -19,6 +20,7 @@ export class SearchResults extends Component {
     propertiesCount: 0,
     pages: 1,
     buttonLoading: false,
+    currency: {}
   };
 
   goToHomePage = () => {
@@ -28,6 +30,13 @@ export class SearchResults extends Component {
   onSegmentPressed = id => {
     this.props.navigation.navigate("SearchResultsProperty", { id: id });
   };
+
+  async componentWillMount() {
+    const currency = await Storage.getItem("currency");
+    this.setState({
+      currency: currency
+    });
+  }
 
   fetchMoreProperties = () => {
     let params = {
@@ -52,11 +61,12 @@ export class SearchResults extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.lastUpdate !== prevProps.lastUpdate) {
-      if (!this.props.foundProperties) {
+      if (!this.props.foundProperties || typeof this.props.foundProperties !== "object") {
         this.setState({
           properties: undefined,
         });
       } else {
+        console.log("THIS PROPS ->", this.props);
         this.setState({
           properties: [
             ...this.state.properties,
@@ -73,7 +83,7 @@ export class SearchResults extends Component {
   }
 
   render() {
-    const { properties, propertiesCount } = this.state;
+    const { properties, propertiesCount, currency } = this.state;
     return (
       <View style={styles.wrapper}>
         <HeaderButton title="Results" onButtonPress={this.goToHomePage} />
@@ -101,7 +111,8 @@ export class SearchResults extends Component {
                 address={prop.address}
                 checkIn="Available"
                 checkOut="now"
-                price={prop.rooms && prop.rooms[0] && prop.rooms[0].price || "--"}
+                price={prop.rooms && prop.rooms[0] && prop.rooms[0].price * currency.multiplier || "--"}
+                currency={currency}
                 onSegmentPressed={this.onSegmentPressed}
               />
             ))}

@@ -22,6 +22,7 @@ export class BookingActive extends Component {
     this.state = {
       properties: [],
       lastUpdate: 0,
+      currency: {}
     };
   }
 
@@ -31,12 +32,13 @@ export class BookingActive extends Component {
       checkOut: this.simplifyDate(booking.dateOut),
       propertyName: booking.room.property.name,
       address: booking.room.property.address,
-      price: booking.room.price,
+      price: booking.room.price * this.state.currency.multiplier,
       description: booking.room.property.description,
       images: booking.room.property.images.map((imgObj) => imgObj.url),
       room: booking.room.roomType.name,
       confirmationCode: booking.orderCode,
-      phone: booking.room.property.contactPhone
+      phone: booking.room.property.contactPhone,
+      currency: this.state.currency
     };
     this.props.route.navigation.navigate("Property", { id, bookingData, getBookings: this.getBookings });
   };
@@ -44,6 +46,13 @@ export class BookingActive extends Component {
   getBookings = () => {
     this.props.getBookings();
   };
+
+  async componentWillMount() {
+    const currency = await Storage.getItem("currency");
+    this.setState({
+      currency: currency
+    })
+  }
 
   async componentDidMount() {
     const loginStatus = await Storage.getItem("loginStatus");
@@ -102,8 +111,9 @@ export class BookingActive extends Component {
               address={prop.room.property.address}
               checkIn={this.simplifyDate(prop.dateIn)}
               checkOut={this.simplifyDate(prop.dateOut)}
-              price={prop.room.price}
+              price={prop.room.price * this.state.currency.multiplier}
               onSegmentPressed={(id) => this.onSegmentPressed(id, prop)}
+              currency={this.state.currency}
             />
           ))
         )}

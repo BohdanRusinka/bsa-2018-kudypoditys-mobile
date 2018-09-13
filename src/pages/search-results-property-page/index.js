@@ -19,6 +19,7 @@ import ImageSlider from "react-native-image-slider";
 import HeaderButton from "../../components/header-button";
 import Loader from "../../components/loader";
 import DatePicker from "react-native-modal-datetime-picker";
+import Storage from "../../helpers/asyncStorage";
 
 export class SearchResultsPropertyPage extends Component {
   state = {
@@ -31,7 +32,18 @@ export class SearchResultsPropertyPage extends Component {
     children: "Children",
     room: "Room",
     paymentType: 1, // 1: cash 2: visa 3: webmoney
+    currency: {}
   };
+
+  async componentWillMount() {
+    const currency = await Storage.getItem("currency");
+    const loginStatus = await Storage.getItem("loginStatus")
+    this.setState({
+      currency: currency,
+      loginStatus: loginStatus
+    });
+  }
+
   componentDidMount() {
     const id = this.props.navigation.getParam("id");
     this.props.getProperty({ id });
@@ -70,6 +82,11 @@ export class SearchResultsPropertyPage extends Component {
   }
 
   bookProperty = () => {
+    if(this.state.loginStatus !== "success") {
+      return Alert.alert("Oops!", "You have to login into your account to book properties.", [
+        { text: "Ok" },
+      ]);
+    }
     if (this.state.adults === "Adults") {
       return Alert.alert("Oops!", "Please, select «Adults» value", [
         { text: "Ok" },
@@ -157,12 +174,7 @@ export class SearchResultsPropertyPage extends Component {
   render() {
     const checkIn = "Available";
     const checkOut = "now";
-
-    const currency = {
-      name: "Dollar",
-      abbr: "USD",
-      sign: "$",
-    };
+    const currency = this.state.currency;
 
     let propertyName;
     let address;
@@ -244,7 +256,7 @@ export class SearchResultsPropertyPage extends Component {
                   rooms.length > 0 &&
                   rooms.map((room, i) => (
                     <Text key={i} style={styles.text}>
-                      {room.roomType.name} - {room.price}
+                      {room.roomType.name} - {room.price * currency.multiplier}
                       {currency.sign}
                     </Text>
                   ))}

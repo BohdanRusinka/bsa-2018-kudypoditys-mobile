@@ -25,9 +25,13 @@ export class AuthHOC extends Component {
     this.props.getCurrentUser();
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("AuthHOC Did Mount");
     this.props.getCurrentUser();
+    const currency = await Storage.getItem("currency");
+    if(!currency) {
+      await Storage.setItem("currency", { id: 0, name: "Dollar", sign: "$", abbr: "USD", multipliter: 1});
+    }
   }
 
   logout = () => {
@@ -79,8 +83,8 @@ export class AuthHOC extends Component {
         this.props.user.email ? (
           <TouchableNativeFeedback onPress={this.logout}>
             <View style={styles.logout}>
-              <Icon name="sign-out" size={20} color="#757575" />
               <Text style={styles.logoutText}>Logout</Text>
+              {/*<Icon name="sign-out" size={18} color="#465571" style={{ paddingTop: 2 }}/>*/}
             </View>
           </TouchableNativeFeedback>
         ) : null}
@@ -99,23 +103,32 @@ const styles = StyleSheet.create({
     height: 70,
   },
   signinButton: {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#fff",
     elevation: 0,
     height: 70,
   },
   signinButtonTitle: {
-    color: "#9b9b9b",
+    color: "#a3a9b7",
     fontSize: 18,
+    fontWeight: "400",
+    paddingHorizontal: 60,
+    paddingVertical: 10,
+    borderRadius: 100,
+    backgroundColor: "#f5f5f5",
   },
   navItem: {
     backgroundColor: "white",
-    paddingVertical: 10,
+    paddingVertical: 0,
     paddingHorizontal: 20,
   },
   navItemText: {
     fontSize: 16,
     color: "#465571",
-    fontWeight: "600",
+    fontWeight: "400",
+    paddingVertical: 10,
+    // backgroundColor: "pink",
+    borderBottomWidth: 1,
+    borderBottomColor: "#e8edf5"
   },
   userDetails: {
     display: "flex",
@@ -148,8 +161,9 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     fontSize: 16,
-    color: "#757575",
-    fontWeight: "600",
-    marginLeft: 5,
+    color: "#465571",
+    fontWeight: "400",
+    paddingRight: 10,
+    paddingTop: -1,
   },
 });

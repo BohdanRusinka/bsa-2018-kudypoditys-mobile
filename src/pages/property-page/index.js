@@ -74,6 +74,7 @@ export class PropertyPage extends Component {
       room,
       confirmationCode,
       phone,
+        currency
     } = bookingData;
 
     return (
@@ -134,7 +135,7 @@ export class PropertyPage extends Component {
 
           <View style={styles.price}>
             <Text style={styles.heading}>Price:</Text>
-            <Text style={styles.text}>{price}$</Text>
+            <Text style={styles.text}>{price}{currency.sign}</Text>
           </View>
 
           <View style={styles.rooms}>

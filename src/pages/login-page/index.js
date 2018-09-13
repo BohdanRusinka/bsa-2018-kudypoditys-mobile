@@ -13,7 +13,6 @@ export class LoginPage extends Component {
   };
 
   handleLoginSubmit = () => {
-    console.log("Login submit", this.state);
     this.props.submitLogin({
       email: this.state.email,
       password: this.state.password,
@@ -35,7 +34,6 @@ export class LoginPage extends Component {
   }
 
   async componentDidUpdate() {
-    console.log("LoginPage Did Update");
     if (this.props.loginStatus === "success") {
       await Storage.setItem("loginStatus", "success");
       this.props.navigation.navigate("Search");
